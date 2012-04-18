@@ -1,13 +1,34 @@
-use inc::Module::Install;
-name 'Text-Textile-Pluggable';
-all_from 'lib/Text/Textile/Pluggable.pm';
+use ExtUtils::MakeMaker;
 
-# requires '';
+sub MY::test_via_harness {
+    "\tprove --rc=.proverc t\n";
+}
 
-tests 't/*.t';
-author_tests 'xt';
+sub MY::top_targets {
+    << "    ...";
+all ::
+\t
+pure_all ::
+\t
+subdirs ::
+\t
+config ::
+\t
+    ...
+}
 
-test_requires 'Test::More';
-auto_set_repository;
-auto_include;
-WriteAll;
+WriteMakefile(
+    NAME          => 'Text::Textile::Pluggable',
+    AUTHOR        => 'issm <issmxx@gmail.com>',
+    VERSION_FROM  => 'lib/Text/Textile/Pluggable.pm',
+    PREREQ_PM     => {
+        'parent'        => '0.224',
+        'Text::Textile' => '2.12',
+        'Class::Load'   => '0.13',
+        'Try::Tiny'     => '0.11',  # in test
+    },
+    MIN_PERL_VERSION => '5.008001',
+    test => {
+        TESTS => 't/*.t t/*/*.t',
+    },
+);

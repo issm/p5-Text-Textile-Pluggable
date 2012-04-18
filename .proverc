@@ -1,0 +1,5 @@
+-Ilib
+-It/lib
+-l
+--color
+-r t
