@@ -22,10 +22,11 @@ WriteMakefile(
     AUTHOR        => 'issm <issmxx@gmail.com>',
     VERSION_FROM  => 'lib/Text/Textile/Pluggable.pm',
     PREREQ_PM     => {
-        'parent'        => '0.224',
-        'Text::Textile' => '2.12',
-        'Class::Load'   => '0.13',
-        'Try::Tiny'     => '0.11',  # in test
+        'parent'            => '0.224',
+        'Text::Textile'     => '2.12',
+        'Class::Load'       => '0.13',
+        'Test::Differences' => '0.61',  # in test
+        'Try::Tiny'         => '0.11',  # in test
     },
     MIN_PERL_VERSION => '5.008001',
     test => {
