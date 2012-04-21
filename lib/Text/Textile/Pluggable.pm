@@ -173,38 +173,37 @@ These plugins can be loaded in your script, as in SYNOPSYS.
 
 =head1 CONSTRUCTOR
 
+Prameters are available as follows:
+
+=head2 $textile = Text::Textile::Pluggable->new(%params)
+
 =over 4
 
-=item $textile = Text::Textile::Pluggable->new(%params)
+=item plugins => \@plugins
 
-plugins => \@plugins
+Plugin module name(s) to load.
 
 =back
 
 =head1 METHODS
 
-=over 4
-
-=item $textile->load_plugin($plugin)
+=head2 $textile->load_plugin($plugin)
 
 Loads plugin.
 
-=item $textile->load_plugins(@plugins)
+=head2 $textile->load_plugins(@plugins)
 
 Loads plugins.
 
-=item $html = $textile->textile($text)
+=head2 $html = $textile->textile($text)
 
 Basically, same as textile method in Text::Textile.
 
 If plugins are already loaded, they are processed before and/or after processing $text.
 
-=item $html = $textile->process($text)
+=head2 $html = $textile->process($text)
 
 Synonym of textile method.
-
-=back
-
 
 =head1 AUTHOR
 
