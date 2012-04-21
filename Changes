@@ -1,4 +1,8 @@
 Revision history for Perl extension Text::Textile::Pluggable
 
+0.02    Sat Apr 21 17:29:00 2012
+        - Fixed problem not able to install
+          (rewrited Makefile.PL with Module::Install)
+
 0.01    Thu Apr 19 11:53:00 2012
         - original version
