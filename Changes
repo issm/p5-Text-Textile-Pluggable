@@ -1,5 +1,9 @@
 Revision history for Perl extension Text::Textile::Pluggable
 
+0.03    Wed Apr 25 15:00:00 2012
+        - subroutine "init" is available in plugin module
+          that is processed in method "load_plugin"
+
 0.02    Sat Apr 21 17:29:00 2012
         - Fixed problem not able to install
           (rewrited Makefile.PL with Module::Install)
