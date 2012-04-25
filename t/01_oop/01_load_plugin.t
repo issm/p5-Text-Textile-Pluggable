@@ -19,6 +19,17 @@ subtest 'named "Text::Textile::Pluggable::Plugin::*"' => sub {
         };
     };
 
+    subtest 'good, with "init"' => sub {
+        my $ttp = new_object();
+        ok ! exists $ttp->{foobarbaz};
+
+        $ttp->load_plugin('Init');
+        ok exists $ttp->{foobarbaz};
+        is $ttp->{foobarbaz}, 'foobarbaz';
+
+        ok ! exists new_object()->{foobarbaz};
+    };
+
     subtest 'bad' => sub {
         my $ttp = new_object();
         try {

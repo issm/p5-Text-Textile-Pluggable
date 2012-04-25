@@ -57,6 +57,15 @@ sub load_plugin {
         $module = $prefix . $module;
     }
     Class::Load::load_class($module)  &&  (push @{$self->{__modules}}, $module);
+
+    ### init
+    my $f = do {
+        no strict 'refs';
+        *{"$module\::init"};
+    };
+    local $@;
+    eval { $f->($self) };
+
     return 1;
 }
 
