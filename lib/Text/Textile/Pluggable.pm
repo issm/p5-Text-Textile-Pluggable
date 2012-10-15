@@ -24,10 +24,6 @@ sub import {
 sub new {
     my ($class, %params) = @_;
     my $self = bless Text::Textile->new(), $class;
-    # my $self = bless +{
-    #     plugins   => [],
-    #     __modules => [],
-    # }, $class;
 
     # additional properties;
     $self->{plugins}   = [];
