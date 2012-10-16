@@ -26,7 +26,7 @@ sub new {
     my $self = bless Text::Textile->new(), $class;
 
     # additional properties;
-    $self->{plugins}   = [];
+    $self->{__plugin}  = +{};  # store only "objective" plugin
     $self->{__modules} = [];
 
     my $plugins = $params{plugins} || $params{plugin};
@@ -39,13 +39,21 @@ sub new {
 }
 
 sub load_plugins {
-    my ($self, @modules) = @_;
-    $self->load_plugin($_)  for @modules;
-    return +@modules;
+    my ($self, @args) = @_;
+    my $count = 0;
+    # ref: Amon2::load_plugins
+    while ( @args ) {
+        my $module = shift @args;
+        my $vars   = @args > 0 && ref($args[0]) eq 'HASH' ? (shift @args) : undef;
+        $self->load_plugin($module, $vars);
+        $count++;
+    }
+    return $count;
 }
 
 sub load_plugin {
-    my ($self, $module) = @_;
+    my ($self, $name, $vars) = @_;
+    my $module = $name;
     my $prefix = __PACKAGE__ . '::Plugin::';
     if ( $module =~ /^\+/ ) {
         $module =~ s/^\+//;
@@ -54,10 +62,20 @@ sub load_plugin {
     }
     Class::Load::load_class($module)  &&  (push @{$self->{__modules}}, $module);
 
-    ### init
-    if ( exists &{"$module\::init"} ) {
-        no strict 'refs';
-        *{"$module\::init"}->($self);
+    ### oop
+    my $p = eval {
+        $vars = +{}  unless ref($vars) eq 'HASH';
+        $module->new( %$vars, _textile => $self );  # if $vars->{_texitle} exists, ignored!
+    };
+    if ( !$@ ) {
+        $self->{__plugin}{$name} = $self->{__plugin}{$module} = $p;
+    }
+    ### traditional
+    else {
+        if ( exists &{"$module\::init"} ) {
+            no strict 'refs';
+            *{"$module\::init"}->($self);
+        }
     }
 
     return 1;
@@ -86,14 +104,13 @@ sub textile {
 
     ### pre
     for my $m (@modules) {
-        my $f = do {
+        if ( exists $self->{__plugin}{$m} ) {
+            $ret = $self->{__plugin}{$m}->pre($ret);
+        }
+        elsif ( exists &{"$m\::pre"} ) {
             no strict 'refs';
-            *{"$m\::pre"};
-        };
-        local $@;
-        my $t = eval { $f->($self, $ret) };
-        next  if $@;
-        $ret = $t;
+            $ret = *{"$m\::pre"}->($self, $ret);
+        }
     }
 
     ### textile
@@ -101,14 +118,13 @@ sub textile {
 
     ### post
     for my $m (@modules) {
-        my $f = do {
+        if ( exists $self->{__plugin}{$m} ) {
+            $ret = $self->{__plugin}{$m}->post($ret);
+        }
+        elsif ( exists &{"$m\::post"} ) {
             no strict 'refs';
-            *{"$m\::post"};
-        };
-        local $@;
-        my $t = eval { $f->($self, $ret) };
-        next  if $@;
-        $ret = $t;
+            $ret = *{"$m\::post"}->($self, $ret);
+        }
     }
 
     return $ret;

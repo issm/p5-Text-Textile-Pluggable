@@ -89,4 +89,57 @@ subtest 'mixed' => sub {
 };
 
 
+subtest 'objective plugin' => sub {
+    subtest 'load "Base" plugin, without vars' => sub {
+        my $ttp = new_object();
+        $ttp->load_plugin('Base');
+
+        my $p = $ttp->{__plugin}{'Base'};
+        isa_ok $p, 'Text::Textile::Pluggable::Plugin::Base';
+    };
+
+    subtest 'load "Base" plugin, with vars' => sub {
+        my $ttp = new_object();
+        $ttp->load_plugin(
+            'Base',
+            +{ foo => 'foofoo', bar => 'barbar' },
+        );
+        my $p = $ttp->{__plugin}{'Base'};
+        isa_ok $p->textile, 'Text::Textile::Pluggable';
+    };
+
+    subtest 'load "Base" plugin, with vars, key named "_textile"' => sub {
+        my $ttp = new_object();
+        $ttp->load_plugin(
+            'Base',
+            +{ _textile => '', foo => 'foofoo' },
+        );
+        my $p = $ttp->{__plugin}{'Base'};
+        isa_ok $p->textile, 'Text::Textile::Pluggable';
+    };
+
+
+    subtest 'load "OO" plugin, without vars' => sub {
+        my $ttp = new_object();
+        $ttp->load_plugin('OO');
+        my $p = $ttp->{__plugin}{'OO'};
+        isa_ok $p, 'Text::Textile::Pluggable::Plugin::OO';
+        is $p->{hoge}, 'hogehoge';
+    };
+
+    subtest 'load "OO" plugin, with vars' => sub {
+        my $ttp = new_object();
+        $ttp->load_plugin(
+            'OO',
+            +{ foo => 'foofoo', bar => 'barbar' },
+        );
+        my $p = $ttp->{__plugin}{'OO'};
+        isa_ok $p, 'Text::Textile::Pluggable::Plugin::OO';
+        is $p->{hoge}, 'hogehoge';
+        is $p->{foo}, 'foofoo';
+        is $p->{bar}, 'barbar';
+    };
+};
+
+
 done_testing;
