@@ -63,11 +63,9 @@ sub load_plugin {
     Class::Load::load_class($module)  &&  (push @{$self->{__modules}}, $module);
 
     ### oop
-    my $p = eval {
+    if ( $module->can('new') ) {
         $vars = +{}  unless ref($vars) eq 'HASH';
-        $module->new( %$vars, _textile => $self );  # if $vars->{_texitle} exists, ignored!
-    };
-    if ( !$@ ) {
+        my $p = $module->new( %$vars, _textile => $self );  # if $vars->{_texitle} exists, ignored!
         $self->{__plugin}{$name} = $self->{__plugin}{$module} = $p;
     }
     ### traditional
