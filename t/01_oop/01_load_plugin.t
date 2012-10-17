@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Flatten;
 use Try::Tiny;
 use t::Util;
 

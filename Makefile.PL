@@ -11,6 +11,7 @@ tests 't/*.t t/*/*.t t/*/*/*.t';
 test_requires 'Test::More';
 test_requires 'Test::Differences' => '0.61';
 test_requires 'Try::Tiny'         => '0.11';
+test_requires 'Test::Flatten'     => '0.09';
 
 auto_set_repository;
 #auto_include;

@@ -13,6 +13,7 @@ package main;
 use strict;
 use warnings;
 use Test::More;
+use Test::Flatten;
 use t::Util;
 use Text::Textile::Pluggable::Plugin::Base;
 

@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Flatten;
 use Text::Textile::Pluggable;
 use t::Util;
 

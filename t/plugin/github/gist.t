@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use Test::Flatten;
 use Test::Differences;
 use Text::Textile::Pluggable qw/textile/;
 use t::Util;
