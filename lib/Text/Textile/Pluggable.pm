@@ -62,9 +62,9 @@ sub load_plugin {
     }
     Class::Load::load_class($module)  &&  (push @{$self->{__modules}}, $module);
 
+    $vars = +{}  unless ref($vars) eq 'HASH';
     ### oop
     if ( $module->can('new') ) {
-        $vars = +{}  unless ref($vars) eq 'HASH';
         my $p = $module->new( %$vars, _textile => $self );  # if $vars->{_texitle} exists, ignored!
         $self->{__plugin}{$name} = $self->{__plugin}{$module} = $p;
     }
@@ -72,7 +72,7 @@ sub load_plugin {
     else {
         if ( exists &{"$module\::init"} ) {
             no strict 'refs';
-            *{"$module\::init"}->($self);
+            *{"$module\::init"}->($self, $vars);
         }
     }
 

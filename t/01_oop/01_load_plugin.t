@@ -21,14 +21,38 @@ subtest 'named "Text::Textile::Pluggable::Plugin::*"' => sub {
     };
 
     subtest 'good, with "init"' => sub {
-        my $ttp = new_object();
-        ok ! exists $ttp->{foobarbaz};
+        subtest 'without vars' => sub {
+            my $ttp = new_object();
+            ok ! exists $ttp->{foobarbaz};
 
-        $ttp->load_plugin('Init');
-        ok exists $ttp->{foobarbaz};
-        is $ttp->{foobarbaz}, 'foobarbaz';
+            $ttp->load_plugin('Init');
+            ok exists $ttp->{foobarbaz};
+            is $ttp->{foobarbaz}, 'foobarbaz';
 
-        ok ! exists new_object()->{foobarbaz};
+            ok ! exists new_object()->{foobarbaz};
+        };
+
+        subtest 'with vars' => sub {
+            my $ttp;
+
+            $ttp = new_object();
+            ok ! exists $ttp->{foobarbaz};
+            $ttp->load_plugin('Init', { foobarbaz => 'aaabbbccc' });
+            ok exists $ttp->{foobarbaz};
+            is $ttp->{foobarbaz}, 'aaabbbccc';
+
+            $ttp = new_object();
+            ok ! exists $ttp->{foobarbaz};
+            $ttp->load_plugin('Init', { foobarbaz => 'dddeeefff' });
+            ok exists $ttp->{foobarbaz};
+            is $ttp->{foobarbaz}, 'dddeeefff';
+
+            $ttp = new_object();
+            ok ! exists $ttp->{foobarbaz};
+            $ttp->load_plugin('Init', { foo => 'hoge' });
+            ok exists $ttp->{foobarbaz};
+            is $ttp->{foobarbaz}, 'foobarbaz';
+        };
     };
 
     subtest 'bad' => sub {
