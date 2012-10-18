@@ -12,6 +12,7 @@ test_requires 'Test::More';
 test_requires 'Test::Differences' => '0.61';
 test_requires 'Try::Tiny'         => '0.11';
 test_requires 'Test::Flatten'     => '0.09';
+test_requires 'Test::LeakTrace'   => '0.14';
 
 auto_set_repository;
 #auto_include;
