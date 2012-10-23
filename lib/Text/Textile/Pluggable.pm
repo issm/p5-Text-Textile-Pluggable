@@ -150,13 +150,18 @@ Text::Textile::Pluggable - Pluggable textile
   use Text::Textile::Pluggable qw/textile/;
 
   # procedural usage
-  my $html = textile($text, [qw/Foobar +MyApp::Textile::Plugin/]);
+  my $html = textile(
+      $text,
+      [qw/Foobar +MyApp::Textile::Plugin/],
+      { foo => 'Foo' },
+  );
 
   # OOP usage
   my $textile = Text::Textile::Pluggable->new(
       plugins => [qw/Foobar +MyApp::Textile::Plugin/],
+      vars    => { foo => 'Foo' },
   );
-  $html = $textile->process($text);
+  $html = $textile->process($text, { bar => 'Bar' });
 
 =head1 DESCRIPTION
 
@@ -167,30 +172,39 @@ Text::Textile::Pluggable is a subclass of Text::Textile and can load plugins tha
 You can create "plugin module" as follows:
 
   package Text::Textile::Pluggable::Plugin::Foobar;
+  use parent 'Text::Textile::Pluggable::Plugin::Base';
+
+  # you can initialize if you need
+  sub init {
+      my ($self, %params) = @_;
+      $self->{foobar} = $params{foobar};
+  }
 
   # before proceccing textiled text
   sub pre {
-      my $textile = shift;
-      my $text    = shift;  # text BEFORE processing
+      my $self = shift;
+      my $text = shift; # text BEFORE processing
+      my $foobar = $self->{foobar};
       ...
       return $text;
   }
 
   # after proceccing textiled text
-  sub post {
-      my $textile = shift;
-      my $text    = shift;  # text AFTER processing
+  sub pre {
+      my $self = shift;
+      my $text = shift; # text AFTER processing (== HTML text)
       ...
       return $text;
   }
 
   1;
 
-Subroutine "pre" defines the processing BEFORE processing "textiled" text, and subroutine "post" defines the processing AFTER processing "textiled" text.
+Method "pre" defines the processing BEFORE processing "textiled" text, and method "post" defines the processing AFTER processing "textiled" text.
 
-You don't need to follow "Text::Textile::Pluggable::Plugin::*" namespace:
+You don't need to follow Text::Textile::Pluggable::Plugin::* namespace:
 
   package MyApp::Textile::Plugin;
+  use parent 'Text::Textile::Pluggable::Plugin::Base';
 
   ...
 
@@ -200,9 +214,9 @@ These plugins can be loaded in your script, as in SYNOPSYS.
 
 =head1 CONSTRUCTOR
 
-Prameters are available as follows:
-
 =head2 $textile = Text::Textile::Pluggable->new(%params)
+
+Parameters are available as follows:
 
 =over 4
 
@@ -210,15 +224,22 @@ Prameters are available as follows:
 
 Plugin module name(s) to load.
 
+=item vars => \%vars
+
+This hashref is passed to each constructor of plugin specified at \@plugins, as parameters.
+
+
 =back
 
 =head1 METHODS
 
-=head2 $textile->load_plugin($plugin)
+=head2 $textile->load_plugin($plugin, \%vars)
 
 Loads plugin.
 
 =head2 $textile->load_plugins(@plugins)
+
+=head2 $textile->load_plugins($plugin1 [, \%vars1], $plugin2 [, \%vars2], ...)
 
 Loads plugins.
 
