@@ -104,6 +104,23 @@ subtest 'objective, single plugin' => sub {
             is $ttp2->textile($t0), "<p>foobar</p>\nfoobar:ddd";
         };
     };
+
+    subtest 'with vars as arg' => sub {
+        subtest 'pre' => sub {
+            my $ttp = new_object( plugins => [qw/+My::Other::Plugin::Foo/] );
+            is $ttp->textile('hoge'), '<p>hogefoobar</p>';
+            is $ttp->textile('hoge',  { foo => 'hoge' } ), '<p>hogehoge</p>';
+            is $ttp->textile('hoge',  { bar => 'fuga' } ), '<p>hogefoobar</p>';
+        };
+
+        subtest 'post' => sub {
+            package main;
+            my $ttp = new_object( plugins => [qw/+My::Other::Plugin::Bar/] );
+            is $ttp->textile('hoge'), '<p>hoge</p>foobar';
+            is $ttp->textile('hoge', { foo => 'hoge' } ), '<p>hoge</p>foobar';
+            is $ttp->textile('hoge', { bar => 'fuga' } ), '<p>hoge</p>fuga';
+        };
+    };
 };
 
 

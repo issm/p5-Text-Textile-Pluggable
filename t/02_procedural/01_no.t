@@ -12,5 +12,6 @@ foo
 * bar
 ...
 is textile($text), textile_($text);
+is textile($text, { foo => 'foo' }), textile_($text);
 
 done_testing;

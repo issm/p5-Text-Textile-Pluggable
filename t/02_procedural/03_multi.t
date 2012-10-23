@@ -26,4 +26,12 @@ foobar
 };
 
 
+subtest 'with vars' => sub {
+    is textile( 'hoge', [qw/+My::Other::Plugin::Foo +My::Other::Plugin::Bar/] ), '<p>hogefoobar</p>foobar';
+    is textile( 'hoge', [qw/+My::Other::Plugin::Foo +My::Other::Plugin::Bar/], { foo => 'foo' }), '<p>hogefoo</p>foobar';
+    is textile( 'hoge', [qw/+My::Other::Plugin::Foo +My::Other::Plugin::Bar/], { bar => 'bar' }), '<p>hogefoobar</p>bar';
+    is textile( 'hoge', [qw/+My::Other::Plugin::Foo +My::Other::Plugin::Bar/], { foo => 'foo', bar => 'bar' }), '<p>hogefoo</p>bar';
+};
+
+
 done_testing;

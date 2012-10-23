@@ -84,18 +84,25 @@ sub load_plugin {
 
 ### override of Text::Textile
 sub textile {
-    my ($self, $text, $plugins);
+    my ($self, $text, $plugins, $vars);
     my $ret = '';
 
     ### oop
     if ( ref($_[0]) eq __PACKAGE__ ) {
-        $self = shift;
-        ($text, $plugins) = @_;
+        ($self, $text) = (shift, shift);
+        while ( my $arg = shift @_ ) {
+            $plugins = $arg  if ref($arg) eq 'ARRAY';
+            $vars    = $arg  if ref($arg) eq 'HASH';
+        }
         $self->load_plugins(@$plugins)  if defined $plugins;
     }
     ### functional
     unless (defined $self) {
-        ($text, $plugins) = @_;
+        $text = shift;
+        while ( my $arg = shift @_ ) {
+            $plugins = $arg  if ref($arg) eq 'ARRAY';
+            $vars    = $arg  if ref($arg) eq 'HASH';
+        }
         $self = __PACKAGE__->new( plugins => $plugins );
     }
     $ret = $text;
@@ -106,11 +113,11 @@ sub textile {
     ### pre
     for my $m (@modules) {
         if ( exists $self->{__plugin}{$m} ) {
-            $ret = $self->{__plugin}{$m}->pre($ret);
+            $ret = $self->{__plugin}{$m}->pre($ret, $vars);
         }
         elsif ( exists &{"$m\::pre"} ) {
             no strict 'refs';
-            $ret = *{"$m\::pre"}->($self, $ret);
+            $ret = *{"$m\::pre"}->($self, $ret, $vars);
         }
     }
 
@@ -120,11 +127,11 @@ sub textile {
     ### post
     for my $m (@modules) {
         if ( exists $self->{__plugin}{$m} ) {
-            $ret = $self->{__plugin}{$m}->post($ret);
+            $ret = $self->{__plugin}{$m}->post($ret, $vars);
         }
         elsif ( exists &{"$m\::post"} ) {
             no strict 'refs';
-            $ret = *{"$m\::post"}->($self, $ret);
+            $ret = *{"$m\::post"}->($self, $ret, $vars);
         }
     }
 
