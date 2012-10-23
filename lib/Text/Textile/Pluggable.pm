@@ -66,7 +66,8 @@ sub load_plugin {
     ### oop
     if ( $module->can('new') ) {
         my $p = $module->new( %$vars, _textile => $self );  # if $vars->{_texitle} exists, ignored!
-        $self->{__plugin}{$name} = $self->{__plugin}{$module} = $p;
+        my $k = ($name =~ /^\+/) ? $module : $name;
+        $self->{__plugin}{$k} = $self->{__plugin}{$module} = $p;
     }
     ### traditional
     else {
