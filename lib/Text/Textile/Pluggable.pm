@@ -30,10 +30,12 @@ sub new {
     $self->{__modules} = [];
 
     my $plugins = $params{plugins} || $params{plugin};
+    my $vars    = $params{vars};
     $plugins ||= [];
     $plugins = [$plugins]  if ref($plugins) eq '';
 
-    $self->load_plugins(@$plugins);
+    if ( defined $vars ) { $self->load_plugins( map { ( $_ => $vars) } @$plugins ) }
+    else                 { $self->load_plugins( @$plugins ) }
 
     return $self;
 }
