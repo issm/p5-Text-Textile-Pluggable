@@ -1,5 +1,5 @@
 package My::Plugin::Foo;
-use parent 'Text::Textile::Pluggable::Plugin::Base';
+use parent 'Text::Textile::Pluggable::Base';
 
 sub pre {
     my ($self, $text) = @_;
@@ -9,7 +9,7 @@ sub pre {
 1;
 
 package My::Plugin::Bar;
-use parent 'Text::Textile::Pluggable::Plugin::Base';
+use parent 'Text::Textile::Pluggable::Base';
 
 sub pre {
     my ($self, $text) = @_;

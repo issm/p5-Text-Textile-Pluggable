@@ -1,6 +1,6 @@
-package Text::Textile::Pluggable::Plugin::OO::AppendPrepend;
+package Text::Textile::Pluggable::OO::AppendPrepend;
 use strict;
-use base 'Text::Textile::Pluggable::Plugin::Base';
+use base 'Text::Textile::Pluggable::Base';
 
 sub pre {
     my ($o, $text) = @_;

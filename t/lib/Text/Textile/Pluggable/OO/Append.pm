@@ -1,6 +1,6 @@
-package Text::Textile::Pluggable::Plugin::OO::Append;
+package Text::Textile::Pluggable::OO::Append;
 use strict;
-use base 'Text::Textile::Pluggable::Plugin::Base';
+use base 'Text::Textile::Pluggable::Base';
 
 sub post {
     my ($self, $text) = @_;

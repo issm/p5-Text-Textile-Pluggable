@@ -1,4 +1,4 @@
-package Text::Textile::Pluggable::Plugin::GitHub::Links;
+package Text::Textile::Pluggable::GitHub::Links;
 use strict;
 use warnings;
 

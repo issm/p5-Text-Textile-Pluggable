@@ -1,4 +1,4 @@
-package Text::Textile::Pluggable::Plugin::Base;
+package Text::Textile::Pluggable::Base;
 use 5.008001;
 use strict;
 use warnings;

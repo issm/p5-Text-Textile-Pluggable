@@ -1,4 +1,4 @@
-package Text::Textile::Pluggable::Plugin::P1;
+package Text::Textile::Pluggable::P1;
 use strict;
 
 sub pre {

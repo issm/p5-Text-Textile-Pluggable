@@ -1,5 +1,5 @@
 package MyTextilePlugin::Foo;
-use parent 'Text::Textile::Pluggable::Plugin::Base';
+use parent 'Text::Textile::Pluggable::Base';
 
 sub init {
     my $self = shift;
@@ -15,10 +15,10 @@ use warnings;
 use Test::More;
 use Test::Flatten;
 use t::Util;
-use Text::Textile::Pluggable::Plugin::Base;
+use Text::Textile::Pluggable::Base;
 
 my ($p0, $p1);
-$p0 = Text::Textile::Pluggable::Plugin::Base->new;
+$p0 = Text::Textile::Pluggable::Base->new;
 $p1 = MyTextilePlugin::Foo->new;
 
 ok ! exists $p0->{foo};

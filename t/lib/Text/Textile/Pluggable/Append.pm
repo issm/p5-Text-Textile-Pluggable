@@ -1,4 +1,4 @@
-package Text::Textile::Pluggable::Plugin::Append;
+package Text::Textile::Pluggable::Append;
 use strict;
 
 sub post {

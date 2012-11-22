@@ -56,11 +56,10 @@ sub load_plugins {
 sub load_plugin {
     my ($self, $name, $vars) = @_;
     my $module = $name;
-    my $prefix = __PACKAGE__ . '::Plugin::';
     if ( $module =~ /^\+/ ) {
         $module =~ s/^\+//;
     } else {
-        $module = $prefix . $module;
+        $module = __PACKAGE__ . "::$module";
     }
     Class::Load::load_class($module)  &&  (push @{$self->{__modules}}, $module);
 
@@ -177,8 +176,8 @@ Text::Textile::Pluggable is a subclass of Text::Textile and can load plugins tha
 
 You can create "plugin module" as follows:
 
-  package Text::Textile::Pluggable::Plugin::Foobar;
-  use parent 'Text::Textile::Pluggable::Plugin::Base';
+  package Text::Textile::Pluggable::Foobar;
+  use parent 'Text::Textile::Pluggable::Base';
 
   # you can initialize if you need
   sub init {
@@ -207,10 +206,10 @@ You can create "plugin module" as follows:
 
 Method "pre" defines the processing BEFORE processing "textiled" text, and method "post" defines the processing AFTER processing "textiled" text.
 
-You don't need to follow Text::Textile::Pluggable::Plugin::* namespace:
+You don't need to follow Text::Textile::Pluggable::* namespace:
 
   package MyApp::Textile::Plugin;
-  use parent 'Text::Textile::Pluggable::Plugin::Base';
+  use parent 'Text::Textile::Pluggable::Base';
 
   ...
 

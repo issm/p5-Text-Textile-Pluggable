@@ -1,4 +1,4 @@
-package Text::Textile::Pluggable::Plugin::Init;
+package Text::Textile::Pluggable::Init;
 use strict;
 
 sub init {

@@ -1,4 +1,4 @@
-package Text::Textile::Pluggable::Plugin::GitHub::Gist;
+package Text::Textile::Pluggable::GitHub::Gist;
 use strict;
 use warnings;
 

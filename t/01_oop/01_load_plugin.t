@@ -13,8 +13,8 @@ subtest 'named "Text::Textile::Pluggable::Plugin::*"' => sub {
         try {
             isa_ok $ttp1->load_plugin('P1'), 'Text::Textile::Pluggable';
             isa_ok $ttp1->load_plugin('P2'), 'Text::Textile::Pluggable';
-            is $ttp1->{__modules}[0], 'Text::Textile::Pluggable::Plugin::P1';
-            is $ttp1->{__modules}[1], 'Text::Textile::Pluggable::Plugin::P2';
+            is $ttp1->{__modules}[0], 'Text::Textile::Pluggable::P1';
+            is $ttp1->{__modules}[1], 'Text::Textile::Pluggable::P2';
             isa_ok $ttp2->load_plugin('P1')->load_plugin('P2'), 'Text::Textile::Pluggable';
             is_deeply $ttp1->{__modules}, $ttp2->{__modules};
         } catch {
@@ -65,7 +65,7 @@ subtest 'named "Text::Textile::Pluggable::Plugin::*"' => sub {
             fail 'Should have error';
         } catch {
             my $msg = shift;
-            like $msg, qr{Can't locate Text/Textile/Pluggable/Plugin/PluginDoesNotExist\.pm};
+            like $msg, qr{Can't locate Text/Textile/Pluggable/PluginDoesNotExist\.pm};
         };
     };
 };
@@ -100,7 +100,7 @@ subtest 'mixed' => sub {
         $ttp->load_plugin('P1');
         $ttp->load_plugin('+My::Other::Plugin::Foobar');
         is_deeply $ttp->{__modules}, [
-            'Text::Textile::Pluggable::Plugin::P1',
+            'Text::Textile::Pluggable::P1',
             'My::Other::Plugin::Foobar',
         ];
     };
@@ -111,7 +111,7 @@ subtest 'mixed' => sub {
         $ttp->load_plugin('P1');
         is_deeply $ttp->{__modules}, [
             'My::Other::Plugin::Foobar',
-            'Text::Textile::Pluggable::Plugin::P1',
+            'Text::Textile::Pluggable::P1',
         ];
     };
 };
@@ -123,7 +123,7 @@ subtest 'objective plugin' => sub {
         $ttp->load_plugin('Base');
 
         my $p = $ttp->{__plugin}{'Base'};
-        isa_ok $p, 'Text::Textile::Pluggable::Plugin::Base';
+        isa_ok $p, 'Text::Textile::Pluggable::Base';
     };
 
     subtest 'load "Base" plugin, with vars' => sub {
@@ -151,7 +151,7 @@ subtest 'objective plugin' => sub {
         my $ttp = new_object();
         $ttp->load_plugin('OO');
         my $p = $ttp->{__plugin}{'OO'};
-        isa_ok $p, 'Text::Textile::Pluggable::Plugin::OO';
+        isa_ok $p, 'Text::Textile::Pluggable::OO';
         is $p->{hoge}, 'hogehoge';
     };
 
@@ -162,7 +162,7 @@ subtest 'objective plugin' => sub {
             +{ foo => 'foofoo', bar => 'barbar' },
         );
         my $p = $ttp->{__plugin}{'OO'};
-        isa_ok $p, 'Text::Textile::Pluggable::Plugin::OO';
+        isa_ok $p, 'Text::Textile::Pluggable::OO';
         is $p->{hoge}, 'hogehoge';
         is $p->{foo}, 'foofoo';
         is $p->{bar}, 'barbar';

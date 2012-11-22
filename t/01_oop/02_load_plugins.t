@@ -16,8 +16,8 @@ subtest 'good, traditional' => sub {
     /), 3;
 
     is_deeply $ttp->{__modules}, [qw/
-        Text::Textile::Pluggable::Plugin::P1
-        Text::Textile::Pluggable::Plugin::P2
+        Text::Textile::Pluggable::P1
+        Text::Textile::Pluggable::P2
         My::Other::Plugin::Foobar
     /];
 
@@ -27,11 +27,11 @@ subtest 'good, traditional' => sub {
     /), 2;
 
     is_deeply $ttp->{__modules}, [qw/
-        Text::Textile::Pluggable::Plugin::P1
-        Text::Textile::Pluggable::Plugin::P2
+        Text::Textile::Pluggable::P1
+        Text::Textile::Pluggable::P2
         My::Other::Plugin::Foobar
-        Text::Textile::Pluggable::Plugin::P3
-        Text::Textile::Pluggable::Plugin::P4
+        Text::Textile::Pluggable::P3
+        Text::Textile::Pluggable::P4
     /];
 };
 
@@ -48,7 +48,7 @@ subtest 'bad' => sub {
         fail 'Shoud have error';
     } catch {
         my $msg = shift;
-        like $msg, qr{Can't locate Text/Textile/Pluggable/Plugin/PluginDoesNotExist.pm};
+        like $msg, qr{Can't locate Text/Textile/Pluggable/PluginDoesNotExist.pm};
     };
 };
 
@@ -63,9 +63,9 @@ subtest 'good, objective' => sub {
         /), 3;
 
         is_deeply $ttp->{__modules}, [qw/
-            Text::Textile::Pluggable::Plugin::OO::1
-            Text::Textile::Pluggable::Plugin::OO::3
-            Text::Textile::Pluggable::Plugin::OO::2
+            Text::Textile::Pluggable::OO::1
+            Text::Textile::Pluggable::OO::3
+            Text::Textile::Pluggable::OO::2
         /];
 
         isa_ok $ttp->{__plugin}{'OO::1'}->textile, 'Text::Textile::Pluggable';
@@ -83,9 +83,9 @@ subtest 'good, objective' => sub {
         ), 3;
 
         is_deeply $ttp->{__modules}, [qw/
-            Text::Textile::Pluggable::Plugin::OO::1
-            Text::Textile::Pluggable::Plugin::OO::2
-            Text::Textile::Pluggable::Plugin::OO::3
+            Text::Textile::Pluggable::OO::1
+            Text::Textile::Pluggable::OO::2
+            Text::Textile::Pluggable::OO::3
         /];
 
         my ($p1, $p2, $p3) = @{$ttp->{__plugin}}{qw/OO::1 OO::2 OO::3/};
