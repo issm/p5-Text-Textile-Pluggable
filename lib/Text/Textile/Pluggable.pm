@@ -196,7 +196,7 @@ You can create "plugin module" as follows:
   }
 
   # after proceccing textiled text
-  sub pre {
+  sub post {
       my $self = shift;
       my $text = shift; # text AFTER processing (== HTML text)
       ...
