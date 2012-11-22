@@ -8,12 +8,15 @@ use t::Util;
 
 subtest 'named "Text::Textile::Pluggable::Plugin::*"' => sub {
     subtest 'good' => sub {
-        my $ttp = new_object();
+        my $ttp1 = new_object();
+        my $ttp2 = new_object();
         try {
-            is $ttp->load_plugin('P1'), 1;
-            is $ttp->load_plugin('P2'), 1;
-            is $ttp->{__modules}[0], 'Text::Textile::Pluggable::Plugin::P1';
-            is $ttp->{__modules}[1], 'Text::Textile::Pluggable::Plugin::P2';
+            isa_ok $ttp1->load_plugin('P1'), 'Text::Textile::Pluggable';
+            isa_ok $ttp1->load_plugin('P2'), 'Text::Textile::Pluggable';
+            is $ttp1->{__modules}[0], 'Text::Textile::Pluggable::Plugin::P1';
+            is $ttp1->{__modules}[1], 'Text::Textile::Pluggable::Plugin::P2';
+            isa_ok $ttp2->load_plugin('P1')->load_plugin('P2'), 'Text::Textile::Pluggable';
+            is_deeply $ttp1->{__modules}, $ttp2->{__modules};
         } catch {
             my $msg = shift;
             fail 'Should succeed: ' . $msg;
@@ -71,7 +74,7 @@ subtest 'other module' => sub {
     subtest 'good' => sub {
         my $ttp = new_object();
         try {
-            is $ttp->load_plugin('+My::Other::Plugin::Foobar'), 1;
+            isa_ok $ttp->load_plugin('+My::Other::Plugin::Foobar'), 'Text::Textile::Pluggable';
             is $ttp->{__modules}[0], 'My::Other::Plugin::Foobar';
         } catch {
             my $msg = shift;

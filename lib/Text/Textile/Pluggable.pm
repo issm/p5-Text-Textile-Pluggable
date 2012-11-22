@@ -79,7 +79,7 @@ sub load_plugin {
         }
     }
 
-    return 1;
+    return $self;
 }
 
 ### override of Text::Textile
@@ -161,6 +161,12 @@ Text::Textile::Pluggable - Pluggable textile
       plugins => [qw/Foobar +MyApp::Textile::Plugin/],
       vars    => { foo => 'Foo' },
   );
+  $html = $textile->process($text, { bar => 'Bar' });
+
+  # or
+  $textile = Text::Textile::Pluggable->new;
+  $textile->load_plugin('Foobar', { foo => 'Foo' })
+          ->load_plugin('+MyApp::Textile::Plugin');
   $html = $textile->process($text, { bar => 'Bar' });
 
 =head1 DESCRIPTION
